@@ -12,7 +12,7 @@ Test against python2.7:
     - python2.7
   script:
     - python -m pip install -r requirements-tests.txt
-    - py.test tests/ --cov git_conflict --flake8 --cov-report term-missing
+    - py.test tests/ --cov git_resolutions --flake8 --cov-report term-missing
   except:
     - rr-cache
 
@@ -21,7 +21,7 @@ Test against python3.5:
     - python3.5
   script:
     - python -m pip install -r requirements-tests.txt
-    - py.test tests/ --cov git_conflict --flake8 --cov-report term-missing
+    - py.test tests/ --cov git_resolutions --flake8 --cov-report term-missing
   except:
     - rr-cache
 
@@ -30,11 +30,11 @@ Build executable:
   tags:
     - python3.5
   script:
-    - python -m zipapp src -p "/usr/bin/env python" -m "git_conflict:main" -o git-conflict
-    - chmod +x git-conflict
+    - python -m zipapp src -p "/usr/bin/env python" -m "git_resolutions:main" -o git-resolutions
+    - chmod +x git-resolutions
   artifacts:
     paths:
-      - git-conflict
+      - git-resolutions
   only:
     - master
     - publish

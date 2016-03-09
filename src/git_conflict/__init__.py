@@ -73,9 +73,9 @@ def install(directory=None, force=False):
         else:
             # must create branch
             shell(['git', 'checkout', '--orphan', branch], cwd=cache_dir)
-        shell('echo "enable git-conflict" > .gitkeep', cwd=cache_dir)
+        shell('echo "enable git-resolutions" > .gitkeep', cwd=cache_dir)
         shell(['git', 'add', '.gitkeep'], cwd=cache_dir)
-        shell(['git', 'commit', '-m', 'enable git-conflict'], cwd=cache_dir)
+        shell(['git', 'commit', '-m', 'enable git-resolutions'], cwd=cache_dir)
         shell(['git', 'push', '--set-upstream', 'origin', branch], cwd=cache_dir)
 
     else:

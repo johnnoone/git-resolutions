@@ -1,2 +1,2 @@
 include versioneer.py
-include src/git_conflict/_version.py
+include src/git_resolutions/_version.py

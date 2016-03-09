@@ -1,10 +1,10 @@
 
 build:
-	python -m zipapp src -p "/usr/bin/env python" -m "git_conflict:main" -o git-conflict
-	chmod +x git-conflict
+	python -m zipapp src -p "/usr/bin/env python" -m "git_resolutions:main" -o git-resolutions
+	chmod +x git-resolutions
 
 install: build
-	./git-conflict --install
+	./git-resolutions --install
 
 publish: install
-	./git-conflict --publish
+	./git-resolutions --publish

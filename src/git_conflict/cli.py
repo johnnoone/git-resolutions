@@ -10,12 +10,12 @@ class Parser(argparse.ArgumentParser):
 
 
 def parse_args(args=None):
-    parser = Parser(prog='git conflict',
+    parser = Parser(prog='git resolutions',
                     usage='%(prog)s --prepare | --publish | <commit-ish>',
                     description='publish merge resolutions')
     parser.set_defaults(action='noop')
     parser.add_argument('-i', '--install', dest='action', action='store_const',
-                        const='install', help='install git conflict')
+                        const='install', help='install git resolutions')
     parser.add_argument('-l', '--pull', dest='action', action='store_const',
                         const='fetch', help='pull resolutions from origin')
     parser.add_argument('-p', '--push', dest='action', action='store_const',
