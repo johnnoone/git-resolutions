@@ -16,7 +16,9 @@ def parse_args(args=None):
     parser.set_defaults(action='noop')
     parser.add_argument('-i', '--install', dest='action', action='store_const',
                         const='install', help='install git conflict')
-    parser.add_argument('-p', '--publish', dest='action', action='store_const',
+    parser.add_argument('-l', '--pull', dest='action', action='store_const',
+                        const='fetch', help='pull resolutions from origin')
+    parser.add_argument('-p', '--push', dest='action', action='store_const',
                         const='publish', help='push resolutions to origin')
     parser.add_argument('-f', '--force', dest='force', action='store_true',
                         help='force command, even on mixmatch')

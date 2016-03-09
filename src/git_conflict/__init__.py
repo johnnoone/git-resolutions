@@ -101,6 +101,15 @@ def install(directory=None, force=False):
         shell(['git', 'stash', 'pop'], cwd=cache_dir)
 
 
+def fetch(directory=None):
+    cache_dir = os.path.join(directory or '.', '.git', 'rr-cache')
+    branch = 'rr-cache'
+
+    # Prerequisite checks
+    check(directory)
+    shell(['git', 'pull', 'origin', branch, '--rebase'], cwd=cache_dir)
+
+
 def publish(directory=None):
     cache_dir = os.path.join(directory or '.', '.git', 'rr-cache')
     branch = 'rr-cache'
@@ -149,6 +158,8 @@ def main():
             install(args.directory, args.force)
         elif args.action == 'publish':
             publish(args.directory)
+        elif args.action == 'fetch':
+            fetch(args.directory)
         else:
             raise ValueError('unknown action %s' % args.action)
     except Exception as error:
