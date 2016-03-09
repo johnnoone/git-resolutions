@@ -12,7 +12,6 @@ del get_versions
 
 
 def shell(*args, **kwargs):
-    # sys.version_info
     kwargs.setdefault('stdout', subprocess.PIPE)
     kwargs.setdefault('stderr', subprocess.PIPE)
     if args and isinstance(args[0], str):
@@ -20,6 +19,7 @@ def shell(*args, **kwargs):
     proc = subprocess.Popen(*args, **kwargs)
     stdout, stderr = proc.communicate()
     if sys.version_info >= (3, 0, 0):
+        # convert bytes to str
         stdout, stderr = stdout.decode('utf-8'), stderr.decode('utf-8')
     return proc, stdout.strip(), stderr.strip()
 
@@ -79,7 +79,6 @@ def install(directory=None, force=False):
         shell(['git', 'push', '--set-upstream', 'origin', branch], cwd=cache_dir)
 
     else:
-        print('pull %s from origin' % branch)
         shell(['git', 'stash'], cwd=cache_dir)
         if current_branch == branch:
             # already on the good branch
@@ -91,7 +90,13 @@ def install(directory=None, force=False):
         else:
             # must create local branch
             track = 'origin/%s' % branch
-            shell(['git', 'checkout', branch, '--track', track], cwd=cache_dir)
+            proc, _, _ = shell(['git', 'checkout', '-b', branch, '--track', track], cwd=cache_dir)
+            if proc.returncode:
+                # something failed, try with a simple checkout
+                proc, _, _ = shell(['git', 'checkout', '-b', branch], cwd=cache_dir)
+            if not proc.returncode:
+                # we can consider now that we have switched to the good branch
+                current_branch = branch
         shell(['git', 'push', '--set-upstream', 'origin', branch], cwd=cache_dir)
         shell(['git', 'stash', 'pop'], cwd=cache_dir)
 
