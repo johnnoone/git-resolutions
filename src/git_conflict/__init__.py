@@ -134,7 +134,7 @@ def check(directory=None):
     _, stdout, _ = shell(['git', 'symbolic-ref', '--short', 'HEAD'], cwd=cache_dir)
     current_branch = stdout
     if current_branch != branch:
-        raise RuntimeError('%s does point to origin/%s' % (cache_dir, branch))
+        raise RuntimeError('%s does point to origin/%s but %s' % (cache_dir, branch, current_branch))
 
 
 def main():
