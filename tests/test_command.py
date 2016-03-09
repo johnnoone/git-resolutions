@@ -40,7 +40,7 @@ def test_mixmatch(mixmatch):
 
 def test_merge(merge_repository):
     # test a merge
-
+    install(merge_repository)
     result = merge(merge_repository, 'i18n-world')
     assert result is False
     merge_repository.resolve()
