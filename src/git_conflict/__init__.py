@@ -43,7 +43,7 @@ def install(directory=None, force=False):
 
     _, stdout, _ = shell(['git', 'config', 'remote.origin.url'], cwd=cache_dir)
     orig = stdout
-    if orig == origin:
+    if orig == repository:
         # do nothing
         pass
     elif not orig:
@@ -129,7 +129,7 @@ def check(directory=None):
         raise RuntimeError('%s does not track origin' % cache_dir)
     _, stdout, _ = shell(['git', 'config', 'remote.origin.url'], cwd=directory)
     if orig != stdout:
-        raise RuntimeError('Project and %s track different origins' % cache_dir)
+        raise RuntimeError('Project and %s track different repositories' % cache_dir)
 
     _, stdout, _ = shell(['git', 'symbolic-ref', '--short', 'HEAD'], cwd=cache_dir)
     current_branch = stdout
