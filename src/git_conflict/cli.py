@@ -14,13 +14,15 @@ def parse_args(args=None):
                     usage='%(prog)s --prepare | --publish | <commit-ish>',
                     description='publish merge resolutions')
     parser.set_defaults(action='noop')
-    parser.add_argument('--install', dest='action', action='store_const',
+    parser.add_argument('-i', '--install', dest='action', action='store_const',
                         const='install', help='install git conflict')
-    parser.add_argument('--publish', dest='action', action='store_const',
-                        const='publish', help='publish rr-cache to origin')
-    # parser.add_argument('ref',
-    #                     help=('Commit-ish object names to merge.\n'
-    #                           'Defaults to HEAD if omitted.'),
-    #                     metavar='commit-ish', nargs='?')
+    parser.add_argument('-p', '--publish', dest='action', action='store_const',
+                        const='publish', help='push resolutions to origin')
+    parser.add_argument('-f', '--force', dest='force', action='store_true',
+                        help='force command, even on mixmatch')
+    parser.add_argument('--directory')
+    parser.add_argument('ref',
+                        help=('commit-ish object names to merge'),
+                        metavar='commit-ish', nargs='?')
     args = parser.parse_args(args)
     return args, parser
