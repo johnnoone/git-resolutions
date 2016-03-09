@@ -1,0 +1,36 @@
+---
+
+stages:
+  - test
+  - publish
+
+before_script:
+  - python -m pip install -e .
+
+Test against python2.7:
+  tags:
+    - python2.7
+  script:
+    - python -m pip install -r requirements-tests.txt
+    - py.test tests/ --cov git_conflict --flake8 --cov-report term-missing
+
+Test against python3.5:
+  tags:
+    - python3.5
+  script:
+    - python -m pip install -r requirements-tests.txt
+    - py.test tests/ --cov git_conflict --flake8 --cov-report term-missing
+
+Build executable:
+  stage: publish
+  tags:
+    - python3.5
+  script:
+    - python -m zipapp src -p "/usr/bin/env python" -m "git_conflict:main" -o git-conflict
+    - chmod +x git-conflict
+  artifacts:
+    paths:
+      - git-conflict
+  only:
+    - master
+    - publish
