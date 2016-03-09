@@ -13,7 +13,7 @@ Test against python2.7:
   script:
     - python -m pip install -r requirements-tests.txt
     - py.test tests/ --cov git_conflict --flake8 --cov-report term-missing
-  exclude:
+  except:
     - rr-cache
 
 Test against python3.5:
@@ -22,7 +22,7 @@ Test against python3.5:
   script:
     - python -m pip install -r requirements-tests.txt
     - py.test tests/ --cov git_conflict --flake8 --cov-report term-missing
-  exclude:
+  except:
     - rr-cache
 
 Build executable:
