@@ -1,6 +1,6 @@
 import pytest
 from git_resolutions import install, publish, check, cli
-from .conftest import shell
+from conftest import shell
 
 
 def test_clean(clean):
