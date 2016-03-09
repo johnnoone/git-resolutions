@@ -18,10 +18,20 @@ def shell(*args, **kwargs):
         kwargs.setdefault('shell', True)
     proc = subprocess.Popen(*args, **kwargs)
     stdout, stderr = proc.communicate()
-    if sys.version_info >= (3, 0, 0):
-        # convert bytes to str
-        stdout, stderr = stdout.decode('utf-8'), stderr.decode('utf-8')
-    return proc, stdout.strip(), stderr.strip()
+
+    if kwargs['stdout'] == subprocess.PIPE:
+        if sys.version_info >= (3, 0, 0):
+            # convert bytes to str
+            stdout = stdout.decode('utf-8')
+        stdout = stdout.strip()
+
+    if kwargs['stderr'] == subprocess.PIPE:
+        if sys.version_info >= (3, 0, 0):
+            # convert bytes to str
+            stderr = stderr.decode('utf-8')
+        stderr = stderr.strip()
+
+    return proc, stdout, stderr
 
 
 def install(directory=None, force=False):
@@ -117,7 +127,6 @@ def publish(directory=None):
     # Prerequisite checks
     check(directory)
 
-
     _, stdout, _ = shell(['git', 'config', 'user.name'], cwd=cache_dir)
     name = stdout
     _, stdout, _ = shell(['git', 'config', 'user.email'], cwd=cache_dir)
@@ -132,8 +141,6 @@ def publish(directory=None):
 
 
 def merge(directory=None, ref=None):
-    cache_dir = os.path.join(directory or '.', '.git', 'rr-cache')
-    branch = 'rr-cache'
     if ref is None:
         raise RuntimeError('reference is required')
     fetch(directory)
@@ -174,7 +181,7 @@ def main():
         elif args.action == 'fetch':
             response = fetch(args.directory)
         elif args.action == 'merge':
-            response = merge(args.directory, arg.ref)
+            response = merge(args.directory, args.ref)
         else:
             raise ValueError('unknown action %s' % args.action)
     except Exception as error:
