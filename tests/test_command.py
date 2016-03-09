@@ -1,3 +1,4 @@
+import pytest
 from git_conflict import install, publish, check, cli
 
 
