@@ -1,5 +1,5 @@
 import pytest
-from git_resolutions import install, publish, check, cli
+from git_resolutions import install, publish, check, cli, merge
 from conftest import shell
 
 
