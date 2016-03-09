@@ -37,3 +37,15 @@ def fresh(request):
 @pytest.fixture(scope='function')
 def mixmatch(request):
     return _repo(request, 'mixmatch.sh')
+
+
+@pytest.fixture(scope='function')
+def merge_repository(request):
+    repo_path = _repo(request, 'merge.sh')
+
+    class Repository(str):
+
+        def resolve(self):
+            return shell(['sh', os.path.join(here, 'merge_resolve.py')], cwd=str(self))
+
+    return Repository(repo_path)

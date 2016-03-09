@@ -131,6 +131,19 @@ def publish(directory=None):
     shell(['git', 'push', 'origin', branch], cwd=cache_dir)
 
 
+def merge(directory=None, ref=None):
+    cache_dir = os.path.join(directory or '.', '.git', 'rr-cache')
+    branch = 'rr-cache'
+    if ref is None:
+        raise RuntimeError('reference is required')
+    fetch(directory)
+    # TODO handle merge here
+    proc, _, _ = shell(['git', 'merge', ref], stdout=None, stderr=None, cwd=directory)
+    if proc.returncode:
+        return False
+    publish(directory)
+
+
 def check(directory=None):
     cache_dir = os.path.join(directory or '.', '.git', 'rr-cache')
     branch = 'rr-cache'
@@ -155,12 +168,15 @@ def main():
     try:
         args, parser = parse_args()
         if args.action == 'install':
-            install(args.directory, args.force)
+            response = install(args.directory, args.force)
         elif args.action == 'publish':
-            publish(args.directory)
+            response = publish(args.directory)
         elif args.action == 'fetch':
-            fetch(args.directory)
+            response = fetch(args.directory)
+        elif args.action == 'merge':
+            response = merge(args.directory, arg.ref)
         else:
             raise ValueError('unknown action %s' % args.action)
     except Exception as error:
         parser.error(error)
+    parser.exit(1 if response is False else 0)

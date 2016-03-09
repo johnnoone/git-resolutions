@@ -1,5 +1,6 @@
 import pytest
 from git_resolutions import install, publish, check, cli
+from .conftest import shell
 
 
 def test_clean(clean):
@@ -34,4 +35,13 @@ def test_mixmatch(mixmatch):
         install(mixmatch)
 
     install(mixmatch, force=True)
+    publish(mixmatch)
+
+
+def test_merge(merge_repository):
+    # test a merge
+
+    result = merge(merge_repository, 'i18n-world')
+    assert result is False
+    merge_repository.resolve()
     publish(mixmatch)
